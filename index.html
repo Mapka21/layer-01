@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAYER-01 — noticias de tecnología e IA, verificadas</title>
+<meta name="description" content="LAYER-01 es un canal de noticias de tecnología e inteligencia artificial presentado por un personaje de IA: verifica rumores con fuentes y opina.">
+<style>
+  :root { --n:#FF7A2A; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#060708; color:#d9d6d0; font-family:Consolas, "JetBrains Mono", monospace; min-height:100vh;
+         background-image:radial-gradient(rgba(255,255,255,.035) 1.2px, transparent 1.2px); background-size:22px 22px; }
+  main { max-width:860px; margin:0 auto; padding:48px 22px 60px; }
+  canvas { display:block; width:min(420px, 90vw); height:min(470px, 100vw); margin:0 auto; }
+  h1 { color:var(--n); letter-spacing:.3em; font-size:clamp(28px, 6vw, 44px); text-align:center; margin-top:10px; text-shadow:0 0 18px rgba(255,122,42,.4); }
+  .sub { text-align:center; color:#8b9099; letter-spacing:.18em; text-transform:uppercase; font-size:13px; margin:8px 0 34px; }
+  p { line-height:1.7; margin:0 0 16px; font-size:15.5px; }
+  h2 { color:var(--n); font-size:16px; letter-spacing:.2em; text-transform:uppercase; margin:34px 0 12px; }
+  a { color:var(--n); }
+  footer { border-top:1px solid #1d1f25; margin-top:44px; padding-top:18px; color:#6b7078; font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <canvas id="c"></canvas>
+  <h1>LAYER-01</h1>
+  <div class="sub">noticias tech · verificadas · desde la capa 01</div>
+
+  <p>LAYER-01 es un canal de noticias de tecnología e inteligencia artificial en español. Lo presenta una
+  entidad hecha de nanobots: un personaje de IA que lee lo que pasa en el mundo tech, revisa los rumores
+  contra sus fuentes y te dice si son ciertos, falsos, engañosos o si todavía no se pueden confirmar.</p>
+  <p>Cada video trae sus fuentes en la descripción. Si no hay fuentes, no se afirma.</p>
+
+  <h2>Cómo se hace</h2>
+  <p>El guion, la voz y la animación se hacen con inteligencia artificial y herramientas propias, y una
+  persona revisa cada video antes de publicarlo. La música de fondo también es original.</p>
+
+  <h2>Contacto</h2>
+  <p><a href="mailto:mvrco2123@gmail.com">mvrco2123@gmail.com</a></p>
+
+  <footer>
+    <a href="privacidad.html">Política de privacidad</a> ·
+    <a href="terminos.html">Términos</a> ·
+    LAYER-01 — yo no duermo, yo indexo.
+  </footer>
+</main>
+<script src="enjambre.js"></script>
+<script>
+  // el enjambre de la portada: mira de un lado a otro y cambia de humor de vez en cuando
+  const cv = document.getElementById("c"), ctx = cv.getContext("2d"), bots = ENJAMBRE.crear();
+  const caras = ["neutral", "mamon", "sospecha", "feliz", "pensando", "emocionado"];
+  let cara = "neutral", mirar = [0, 0], antes = performance.now(), cambio = 0, vista = 0;
+  function tamano() { const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1; cv.width = r.width * d; cv.height = r.height * d; }
+  addEventListener("resize", tamano); tamano();
+  function cuadro(ahora) {
+    const dt = Math.min(.05, (ahora - antes) / 1000); antes = ahora;
+    if (ahora > cambio) { cara = caras[Math.random() * caras.length | 0]; cambio = ahora + 3500 + Math.random() * 3000; }
+    if (ahora > vista) { mirar = [Math.round(Math.random() * 2 - 1), Math.round(Math.random() * 2 - 1)]; vista = ahora + 1500 + Math.random() * 2000; }
+    const esc = Math.min(cv.width / ENJAMBRE.ANCHO, cv.height / ENJAMBRE.ALTO) * .95;
+    bots.dibujar(ctx, { cara, mirar, acc: [], hablando: false }, { x: cv.width / 2, y: cv.height * .54, escala: esc }, dt, ahora);
+    requestAnimationFrame(cuadro);
+  }
+  requestAnimationFrame(cuadro);
+</script>
+</body>
+</html>
